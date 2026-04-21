@@ -8,354 +8,451 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0e0e0c;
-    --ink:#f3f0e8;
-    --muted:#8a867c;
-    --card:#161613;
-    --line:rgba(243,240,232,0.1);
-    --accent:#c8f24b;     /* lime green — bold accent */
-    --accent-2:#ff6a3d;   /* warm orange */
-    --chip:#1e1e1a;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  button{font-family:inherit;border:none;cursor:pointer}
+:root {
+  --bg:      #f9f8f5;
+  --white:   #ffffff;
+  --ink:     #0a0a08;
+  --muted:   #7a756c;
+  --line:    rgba(10,10,8,.09);
+  --surface: #f0ede6;
+  --accent:  #c8f24b;
+}
 
-  /* Grain overlay */
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.06;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.9'/></svg>");
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+html, body {
+  background: var(--bg); color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; line-height: 1;
+}
+a { color: inherit; text-decoration: none }
+button { font-family: inherit; border: none; cursor: pointer }
 
-  .wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px }
+@media(max-width:600px) { .wrap { padding: 0 20px } }
 
-  /* NAV */
-  nav.top{
-    position:fixed;top:20px;left:0;right:0;z-index:100;
-  }
-  .nav-inner{
-    max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;
-  }
-  .nav-pill{
-    background:rgba(22,22,19,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--line);border-radius:999px;padding:10px 10px 10px 20px;
-    display:flex;align-items:center;gap:18px;
-  }
-  .logo{
-    display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.01em;font-size:15px;
-  }
-  .logo .dot{
-    width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(200,242,75,.15);
-    animation:pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.8}}
-  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--ink)}
-  .nav-links a{opacity:.78;transition:opacity .2s}
-  .nav-links a:hover{opacity:1}
-  .nav-right{display:flex;align-items:center;gap:12px}
-  .lang-switch{
-    display:flex;align-items:center;gap:2px;background:rgba(22,22,19,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-    border:1px solid var(--line);border-radius:999px;padding:4px;
-  }
-  .lang-btn{
-    background:none;color:var(--muted);padding:6px 12px;border-radius:999px;
-    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;font-weight:500;
-    transition:color .2s,background .2s;
-  }
-  .lang-btn:hover{color:var(--ink)}
-  .lang-btn.active{background:rgba(243,240,232,.12);color:var(--ink)}
-  .nav-cta{
-    background:var(--accent);color:#0e0e0c;border-radius:999px;padding:11px 20px;font-weight:700;font-size:14px;
-    display:inline-flex;align-items:center;gap:8px;transition:transform .25s ease, background .25s;
-  }
-  .nav-cta:hover{transform:translateY(-1px);background:#d8ff5a}
-  .nav-cta .arrow{display:inline-block;transition:transform .25s}
-  .nav-cta:hover .arrow{transform:translate(2px,-2px)}
+/* ─── NAV ──────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(249,248,245,.92);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 40px;
+  height: 68px; display: flex; align-items: center; justify-content: space-between;
+}
+@media(max-width:600px) { .nav-inner { padding: 0 20px } }
 
-  @media(max-width:800px){.nav-links{display:none}}
+.logo {
+  font-weight: 800; font-size: 15px; letter-spacing: -.02em;
+  display: flex; align-items: center; gap: 8px;
+}
+.logo-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
 
-  /* HERO */
-  .hero{padding:160px 0 80px;position:relative;min-height:100vh;min-height:100dvh}
-  .kicker{
-    display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;
-    font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:'JetBrains Mono',monospace;
-  }
-  .kicker .blink{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:blink 1.6s infinite}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+  font-size: 14px; font-weight: 500;
+}
+.nav-links a { color: var(--muted); transition: color .2s }
+.nav-links a:hover { color: var(--ink) }
+@media(max-width:860px) { .nav-links { display: none } }
 
-  h1.headline{
-    font-size:clamp(56px,10vw,152px);line-height:.92;letter-spacing:-.045em;font-weight:900;margin:28px 0 0;
-    font-family:'Inter',sans-serif;
-  }
-  h1.headline .line{display:block;overflow:hidden}
-  h1.headline .line > span{display:inline-block;transform:translateY(110%);opacity:0;animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards}
-  h1.headline .line:nth-child(1) span{animation-delay:.05s}
-  h1.headline .line:nth-child(2) span{animation-delay:.18s}
-  h1.headline .line:nth-child(3) span{animation-delay:.32s}
-  @keyframes rise{to{transform:translateY(0);opacity:1}}
-  .italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--accent);letter-spacing:-.02em}
+.nav-right { display: flex; align-items: center; gap: 12px }
+.lang-switch {
+  display: flex; align-items: center;
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--white);
+}
+.lang-btn {
+  background: none; color: var(--muted); padding: 5px 11px; border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .06em; font-weight: 500; transition: color .2s, background .2s;
+}
+.lang-btn:hover { color: var(--ink) }
+.lang-btn.active { background: var(--ink); color: var(--bg) }
 
-  .hero-sub{
-    max-width:640px;margin-top:36px;font-size:19px;line-height:1.55;color:#c7c3b8;
-    opacity:0;animation:fade .8s .55s forwards;
-  }
-  @keyframes fade{to{opacity:1}}
-  .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;opacity:0;animation:fade .8s .7s forwards}
-  .btn-primary{
-    background:var(--accent);color:#0e0e0c;padding:18px 28px;border-radius:999px;font-weight:700;font-size:15px;
-    display:inline-flex;align-items:center;gap:10px;transition:transform .25s, background .25s;
-  }
-  .btn-primary:hover{transform:translateY(-2px);background:#d8ff5a}
-  .btn-ghost{
-    padding:18px 28px;border:1px solid var(--line);border-radius:999px;font-weight:600;font-size:15px;
-    display:inline-flex;align-items:center;gap:10px;transition:border-color .25s, background .25s;
-  }
-  .btn-ghost:hover{border-color:var(--ink);background:rgba(243,240,232,.04)}
+.nav-cta {
+  background: var(--ink); color: var(--bg);
+  padding: 10px 20px; border-radius: 999px; font-weight: 600; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .2s;
+}
+.nav-cta:hover { background: #2a2a26 }
 
-  .hero-meta{
-    display:flex;gap:28px;flex-wrap:wrap;margin-top:48px;font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace;
-    opacity:0;animation:fade .8s .85s forwards;
-  }
-  .hero-meta span{display:inline-flex;align-items:center;gap:8px}
-  .hero-meta .tick{color:var(--accent)}
+/* ─── HERO ─────────────────────────────────────────────────── */
+.hero { padding: 160px 0 100px }
 
-  /* Hero stats module — anchored card, grid-aligned */
-  .hero-stats{
-    position:absolute;bottom:clamp(24px,4vh,48px);right:clamp(16px,3vw,40px);width:min(300px,calc(100vw - 48px));
-    background:var(--card);border:1px solid var(--line);border-radius:24px;overflow:hidden;
-    box-shadow:0 30px 60px rgba(0,0,0,.4);
-    opacity:0;transform:translateY(20px);animation:statsIn .9s .9s cubic-bezier(.2,.8,.2,1) forwards;
-  }
-  @keyframes statsIn{to{opacity:1;transform:translateY(0)}}
-  .hero-stats-head{
-    display:flex;align-items:center;justify-content:space-between;padding:14px 18px;
-    border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  }
-  .hero-stats-head .live{display:inline-flex;align-items:center;gap:8px;color:var(--accent)}
-  .hero-stats-head .live i{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 1.6s infinite}
-  .stat-row{
-    display:flex;align-items:baseline;justify-content:space-between;padding:18px;
-    border-bottom:1px solid var(--line);
-  }
-  .stat-row:last-child{border-bottom:none}
-  .stat-row .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-  .stat-row .value{font-size:32px;font-weight:900;letter-spacing:-.03em;line-height:1;color:var(--ink)}
-  .stat-row .value.accent{color:var(--accent)}
-  .stat-row .value.italic{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:34px}
-  .stat-row .sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;text-align:right}
-  .stat-row-col{display:flex;flex-direction:column;align-items:flex-end;gap:0}
-  @media(max-width:1080px){.hero-stats{position:relative;top:auto;right:auto;width:100%;max-width:420px;margin-top:48px}}
-  @media(max-width:900px){.hero-stats{display:none}}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 14px; background: var(--white); margin-bottom: 36px;
+}
+.hero-tag .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: blink 1.6s infinite }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-  /* MARQUEE */
-  .marquee{
-    overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:22px 0;margin-top:60px;background:#0a0a09;
-  }
-  .marquee-track{display:flex;gap:48px;white-space:nowrap;animation:scroll 40s linear infinite;font-family:'Instrument Serif',serif;font-style:italic;font-size:42px;letter-spacing:-.02em}
-  .marquee-track span{display:inline-flex;align-items:center;gap:48px}
-  .marquee-track .dot{width:10px;height:10px;background:var(--accent);border-radius:50%;display:inline-block}
-  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+h1 {
+  font-size: clamp(52px,9vw,140px); line-height: .91;
+  letter-spacing: -.04em; font-weight: 900;
+}
+h1 .line { display: block; overflow: hidden }
+h1 .line > span {
+  display: inline-block; transform: translateY(110%); opacity: 0;
+  animation: rise .85s cubic-bezier(.16,.86,.3,.98) forwards;
+}
+h1 .line:nth-child(1) > span { animation-delay: .05s }
+h1 .line:nth-child(2) > span { animation-delay: .14s }
+h1 .line:nth-child(3) > span { animation-delay: .24s }
+@keyframes rise { to { transform: translateY(0); opacity: 1 } }
 
-  /* SECTION HEADERS */
-  section{padding:120px 0;position:relative}
-  .section-label{
-    display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;
-    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;
-  }
-  .section-label::before{content:"";width:28px;height:1px;background:var(--muted)}
-  h2.section-title{
-    font-size:clamp(40px,6vw,84px);line-height:1;letter-spacing:-.035em;font-weight:800;margin:0 0 60px;max-width:900px;
-  }
+.serif { font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400 }
 
-  /* WORK */
-  .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-  @media(max-width:900px){.work-grid{grid-template-columns:1fr}}
-  .case{
-    background:var(--card);border:1px solid var(--line);border-radius:28px;padding:32px;position:relative;overflow:hidden;
-    transition:transform .4s cubic-bezier(.2,.8,.2,1), border-color .3s;
-  }
-  .case:hover{transform:translateY(-6px);border-color:rgba(200,242,75,.3)}
-  .case-frame{
-    aspect-ratio:16/10;border-radius:18px;overflow:hidden;position:relative;margin-bottom:24px;
-    border:1px solid var(--line);
-  }
-  .browser-bar{
-    display:flex;align-items:center;gap:8px;padding:10px 14px;background:#1f1f1b;border-bottom:1px solid var(--line);
-  }
-  .browser-bar .d{width:10px;height:10px;border-radius:50%;background:#2e2e29}
-  .browser-bar .url{
-    margin-left:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
-    background:#141412;border:1px solid var(--line);border-radius:6px;padding:4px 10px;flex:1;text-align:center;
-  }
-  .browser-body{
-    position:absolute;inset:36px 0 0 0;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(135deg,var(--bg1,#1a1a16),var(--bg2,#0e0e0c));
-    overflow:hidden;
-  }
+.hero-body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+  margin-top: 60px;
+}
+@media(max-width:800px) { .hero-body { grid-template-columns: 1fr; gap: 32px } }
 
-  /* Mini mocks per case */
-  .mock-ff{--bg1:#0d1f15;--bg2:#081a10;color:#a8e6b0}
-  .mock-vn{--bg1:#1f1520;--bg2:#120910;color:#e6c0d0}
-  .mock-co{--bg1:#1a1814;--bg2:#0e0c09;color:#f0e6c8}
-  .mock-fo{--bg1:#121a24;--bg2:#09111a;color:#b8d4e6}
+.hero-sub {
+  font-size: 18px; line-height: 1.65; color: var(--muted);
+  max-width: 460px;
+  opacity: 0; animation: fadein .8s .5s forwards;
+}
+@keyframes fadein { to { opacity: 1 } }
 
-  .mock-ff .m-title,.mock-vn .m-title,.mock-co .m-title,.mock-fo .m-title{
-    font-size:44px;font-weight:900;letter-spacing:-.03em;margin:0 0 12px;color:var(--ink)
-  }
-  .mock-content{padding:36px;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center}
-  .mock-row{display:flex;gap:8px;margin-top:10px}
-  .mock-card{
-    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:#c7c3b8;
-  }
-  .mock-badge{
-    display:inline-flex;align-items:center;gap:6px;background:rgba(200,242,75,.12);color:var(--accent);
-    border-radius:999px;padding:4px 10px;font-size:10px;font-family:'JetBrains Mono',monospace;
-    align-self:flex-start;margin-bottom:14px;
-  }
-  .mock-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.06);margin-top:10px;overflow:hidden}
-  .mock-bar i{display:block;height:100%;background:currentColor;animation:grow 3s ease-in-out infinite alternate}
-  @keyframes grow{from{width:20%}to{width:85%}}
-  .mock-dots{display:flex;gap:6px;margin-top:14px}
-  .mock-dots i{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
-  .mock-dots i.on{background:currentColor;opacity:.5}
+.hero-actions {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px;
+  opacity: 0; animation: fadein .8s .65s forwards;
+}
+.btn-fill {
+  background: var(--ink); color: var(--bg);
+  padding: 16px 28px; border-radius: 999px; font-weight: 700; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: background .2s, transform .2s;
+}
+.btn-fill:hover { background: #2a2a26; transform: translateY(-1px) }
+.btn-outline {
+  border: 1.5px solid var(--line); border-radius: 999px;
+  padding: 16px 28px; font-weight: 600; font-size: 15px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); transition: border-color .2s;
+}
+.btn-outline:hover { border-color: rgba(10,10,8,.35) }
 
-  .case-meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;justify-content:space-between}
-  .case h3{font-size:32px;line-height:1.05;letter-spacing:-.02em;margin:0 0 12px;font-weight:800}
-  .case p{color:#c7c3b8;line-height:1.55;margin:0 0 20px}
-  .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-  .tag{
-    font-size:11px;font-family:'JetBrains Mono',monospace;border:1px solid var(--line);border-radius:999px;
-    padding:5px 12px;color:#c7c3b8;
-  }
-  .case-link{
-    display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:var(--accent);
-    transition:gap .25s;
-  }
-  .case-link:hover{gap:14px}
+.hero-trust {
+  display: flex; flex-direction: column; gap: 14px;
+  opacity: 0; animation: fadein .8s .8s forwards;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--muted);
+}
+.trust-item::before {
+  content: ""; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--surface); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2.5 2.5L8 3' stroke='%230a0a08' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: center; background-size: 10px;
+}
 
-  /* APPROACH */
-  #tilgang{background:var(--ink);color:#0e0e0c;border-radius:48px;margin:0 16px;padding:120px 0}
-  #tilgang .wrap{max-width:1200px}
-  #tilgang .section-label{color:#5c584f}
-  #tilgang .section-label::before{background:#5c584f}
-  #tilgang h2.section-title{color:#0e0e0c}
-  .approach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
-  @media(max-width:900px){.approach-grid{grid-template-columns:1fr}}
-  .approach-card{
-    background:#f7f4ec;border:1px solid rgba(14,14,12,.08);border-radius:24px;padding:32px;position:relative;
-    transition:transform .4s;
-  }
-  .approach-card:hover{transform:translateY(-4px)}
-  .approach-card:nth-child(2){background:#0e0e0c;color:var(--ink)}
-  .approach-card:nth-child(2) .num{color:var(--accent)}
-  .approach-card:nth-child(3){background:var(--accent);color:#0e0e0c}
-  .approach-card .num{font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:40px;display:block}
-  .approach-card h3{font-size:26px;line-height:1.1;letter-spacing:-.02em;margin:0 0 14px;font-weight:800}
-  .approach-card p{font-size:15px;line-height:1.55;margin:0;opacity:.85}
-  .founder{
-    margin-top:60px;display:flex;align-items:center;gap:20px;padding:20px;background:rgba(14,14,12,.04);border-radius:999px;width:fit-content;
-  }
-  .founder-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#1a1a16,#3a3a32);display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic}
-  .founder-text{font-size:14px;line-height:1.3}
-  .founder-text b{display:block;font-size:16px}
-  .founder-text span{color:#5c584f;font-size:13px}
+/* ─── CLIENTS STRIP ────────────────────────────────────────── */
+.clients-strip {
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 28px 0; overflow: hidden; background: var(--surface);
+}
+.clients-track {
+  display: flex; gap: 56px; white-space: nowrap;
+  animation: marquee 38s linear infinite;
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: 38px; letter-spacing: -.02em; color: var(--ink);
+}
+.clients-track span { display: inline-flex; align-items: center; gap: 56px }
+.clients-track .sep { width: 6px; height: 6px; border-radius: 50%; background: rgba(10,10,8,.2); display: inline-block }
+@keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 
-  /* PRICING */
-  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media(max-width:900px){.pricing-grid{grid-template-columns:1fr}}
-  .price-card{
-    background:var(--card);border:1px solid var(--line);border-radius:28px;padding:36px;transition:transform .35s, border-color .3s;
-    display:flex;flex-direction:column;
-  }
-  .price-card:hover{transform:translateY(-4px);border-color:rgba(200,242,75,.3)}
-  .price-card.featured{background:var(--accent);color:#0e0e0c;border-color:var(--accent)}
-  .price-card.featured .price-cta{background:#0e0e0c;color:var(--accent)}
-  .price-card.featured .price-cta:hover{background:#1a1a16}
-  .price-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:12px}
-  .price-card h3{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:0 0 28px;line-height:1.1}
-  .price-amount{font-size:48px;font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:8px;font-family:'Inter',sans-serif}
-  .price-amount .currency{font-size:22px;font-weight:600;opacity:.6;margin-right:4px}
-  .price-unit{font-family:'JetBrains Mono',monospace;font-size:12px;opacity:.6;margin-bottom:24px}
-  .price-desc{font-size:15px;line-height:1.5;opacity:.85;margin-bottom:32px;flex:1}
-  .price-cta{
-    background:#f3f0e8;color:#0e0e0c;padding:14px 22px;border-radius:999px;font-weight:700;font-size:14px;
-    display:inline-flex;align-items:center;justify-content:space-between;gap:10px;transition:transform .25s;width:100%;
-  }
-  .price-cta:hover{transform:translateY(-2px)}
-  .price-note{margin-top:28px;font-size:14px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-align:center}
+/* ─── SECTION BASE ─────────────────────────────────────────── */
+section { padding: 120px 0 }
 
-  /* CONTACT */
-  #kontakt{padding:120px 0 80px}
-  .contact-wrap{
-    background:linear-gradient(160deg,#161613 0%,#0e0e0c 100%);
-    border:1px solid var(--line);border-radius:36px;padding:80px 56px;position:relative;overflow:hidden;
-  }
-  .contact-wrap::before{
-    content:"";position:absolute;top:-120px;right:-120px;width:400px;height:400px;border-radius:50%;
-    background:radial-gradient(circle,rgba(200,242,75,.15),transparent 70%);
-  }
-  .contact-wrap h2{font-size:clamp(40px,6vw,84px);line-height:1;letter-spacing:-.035em;font-weight:800;margin:16px 0 24px;max-width:900px;position:relative}
-  .contact-wrap p{font-size:19px;line-height:1.5;color:#c7c3b8;max-width:560px;margin:0 0 40px;position:relative}
-  .email-big{
-    display:inline-flex;align-items:center;gap:16px;font-size:clamp(28px,4vw,48px);font-weight:800;
-    letter-spacing:-.02em;color:var(--accent);position:relative;transition:gap .3s;
-  }
-  .email-big:hover{gap:22px}
-  .email-big .circle{
-    width:54px;height:54px;border-radius:50%;background:var(--accent);color:#0e0e0c;
-    display:flex;align-items:center;justify-content:center;transition:transform .35s;
-  }
-  .email-big:hover .circle{transform:rotate(-15deg) scale(1.08)}
-  .contact-meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:50px;padding-top:40px;border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);position:relative}
-  .contact-meta a:hover{color:var(--ink)}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--muted) }
 
-  /* FOOTER */
-  footer{padding:60px 0;border-top:1px solid var(--line)}
-  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;font-size:13px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-  .foot a:hover{color:var(--ink)}
-  .foot-links{display:flex;gap:16px}
+h2 {
+  font-size: clamp(36px,5.5vw,78px); line-height: .97;
+  letter-spacing: -.035em; font-weight: 800; margin-bottom: 56px;
+}
 
-  /* Reveal */
-  .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
-  .reveal.in{opacity:1;transform:translateY(0)}
-  .reveal.d1{transition-delay:.08s}
-  .reveal.d2{transition-delay:.16s}
-  .reveal.d3{transition-delay:.24s}
+/* ─── WORK ─────────────────────────────────────────────────── */
+#arbejde { background: var(--bg) }
 
-  /* Sticker */
-  .sticker{
-    position:absolute;right:40px;top:-30px;width:140px;height:140px;background:var(--accent);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;color:#0e0e0c;font-weight:800;font-size:13px;text-align:center;
-    transform:rotate(-12deg);animation:spin 18s linear infinite;
-  }
-  @keyframes spin{to{transform:rotate(348deg)}}
-  .sticker svg{position:absolute;inset:0;width:100%;height:100%;animation:spinr 18s linear infinite reverse}
-  @keyframes spinr{to{transform:rotate(-360deg)}}
+.work-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px }
+@media(max-width:840px) { .work-grid { grid-template-columns: 1fr } }
+
+.case {
+  background: var(--white); border: 1px solid var(--line); border-radius: 20px;
+  overflow: hidden; transition: box-shadow .35s, transform .35s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.case:hover { box-shadow: 0 16px 48px rgba(0,0,0,.1); transform: translateY(-4px) }
+
+.case-screen {
+  aspect-ratio: 16/10; position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.browser-chrome {
+  display: flex; align-items: center; gap: 6px; padding: 10px 14px;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+}
+.chrome-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(10,10,8,.12) }
+.chrome-url {
+  margin-left: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); background: var(--white); border: 1px solid var(--line);
+  border-radius: 5px; padding: 3px 10px; flex: 1; text-align: center;
+}
+.case-ui {
+  position: absolute; inset: 34px 0 0 0;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--ui1,#141410), var(--ui2,#0a0a08));
+  overflow: hidden;
+}
+.ui-ff { --ui1:#0d1f15; --ui2:#081a10 }
+.ui-vn { --ui1:#1e1520; --ui2:#100810 }
+.ui-co { --ui1:#191710; --ui2:#0e0c08 }
+.ui-fo { --ui1:#101820; --ui2:#080f18 }
+
+.ui-inner { padding: 32px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center }
+.ui-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(200,242,75,.14); color: #c8f24b; border-radius: 999px;
+  padding: 4px 10px; font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  align-self: flex-start; margin-bottom: 14px;
+}
+.ui-title { font-size: 40px; font-weight: 900; letter-spacing: -.03em; color: #f3f0e8; margin-bottom: 16px; line-height: 1 }
+.ui-rows { display: flex; gap: 8px; margin-top: 4px }
+.ui-chip {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px; padding: 8px 12px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #c7c3b8;
+}
+.ui-bar { height: 5px; border-radius: 3px; background: rgba(255,255,255,.07); margin-top: 14px; overflow: hidden }
+.ui-bar i { display: block; height: 100%; background: currentColor; animation: grow 3s ease-in-out infinite alternate }
+@keyframes grow { from{width:20%} to{width:80%} }
+.ui-dots { display: flex; gap: 5px; margin-top: 12px }
+.ui-dots i { width: 20px; height: 20px; border-radius: 6px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09) }
+.ui-dots i.on { background: currentColor; opacity: .45 }
+
+.case-ff { color: #a8e6b0 }
+.case-vn { color: #e6c0d0 }
+.case-co { color: #f0e6c8 }
+.case-fo { color: #b8d4e6 }
+
+.case-body { padding: 28px 32px 32px }
+.case-meta {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  display: flex; justify-content: space-between;
+}
+.case h3 { font-size: 26px; letter-spacing: -.02em; font-weight: 800; margin-bottom: 10px; line-height: 1.1 }
+.case p { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 20px }
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px }
+.tag {
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 4px 11px; color: var(--muted); background: var(--bg);
+}
+.case-link { font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: gap .2s }
+.case-link:hover { gap: 12px }
+
+/* ─── APPROACH ─────────────────────────────────────────────── */
+#tilgang {
+  background: var(--surface); border-radius: 32px; margin: 0 20px;
+  padding: 100px 0;
+}
+#tilgang .eyebrow { color: var(--muted) }
+#tilgang .eyebrow::before { background: var(--muted) }
+
+.approach-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 48px;
+}
+@media(max-width:860px) { .approach-grid { grid-template-columns: 1fr } }
+
+.ap-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: 16px;
+  padding: 32px; transition: transform .3s, box-shadow .3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.ap-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.08) }
+.ap-card:nth-child(2) { background: var(--ink); color: #f7f5f0; border-color: transparent }
+.ap-card:nth-child(2) .ap-num { color: rgba(247,245,240,.35) }
+.ap-card:nth-child(3) { background: var(--accent); color: #0a0a08; border-color: transparent }
+
+.ap-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: .08em; color: var(--muted); margin-bottom: 36px; display: block;
+}
+.ap-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 12px; line-height: 1.1 }
+.ap-card p { font-size: 14px; line-height: 1.65; opacity: .75 }
+
+.founder-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 22px; background: var(--white); border: 1px solid var(--line);
+  border-radius: 999px; width: fit-content;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.founder-av {
+  width: 48px; height: 48px; border-radius: 50%; background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400;
+  font-size: 18px; color: var(--bg);
+}
+.founder-info { font-size: 14px; line-height: 1.35 }
+.founder-info strong { display: block; font-weight: 700; font-size: 15px }
+.founder-info span { color: var(--muted); font-size: 13px }
+
+/* ─── PRICING ──────────────────────────────────────────────── */
+#priser { background: var(--bg) }
+
+.pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px }
+@media(max-width:860px) { .pricing-grid { grid-template-columns: 1fr } }
+
+.price-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: 20px;
+  padding: 36px; display: flex; flex-direction: column;
+  transition: transform .3s, box-shadow .3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.price-card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0,0,0,.09) }
+.price-card.featured { background: var(--ink); color: #f7f5f0; border-color: transparent }
+.price-card.featured .price-cta { background: var(--bg); color: var(--ink) }
+.price-card.featured .price-cta:hover { background: var(--surface) }
+.price-card.featured .price-unit,
+.price-card.featured .price-desc { opacity: .65 }
+
+.price-tier {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase; opacity: .55; margin-bottom: 12px;
+  display: block;
+}
+.price-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin-bottom: 24px; line-height: 1.1 }
+.price-num { font-size: 44px; font-weight: 900; letter-spacing: -.04em; line-height: 1; margin-bottom: 6px }
+.price-num .curr { font-size: 14px; font-weight: 600; opacity: .45; margin-right: 3px; vertical-align: super }
+.price-unit { font-family: 'JetBrains Mono', monospace; font-size: 11px; opacity: .45; margin-bottom: 20px; display: block }
+.price-desc { font-size: 14px; line-height: 1.65; opacity: .72; flex: 1; margin-bottom: 28px }
+.price-cta {
+  background: var(--ink); color: #f7f5f0; padding: 13px 20px; border-radius: 999px;
+  font-weight: 700; font-size: 14px; width: 100%;
+  display: inline-flex; align-items: center; justify-content: space-between;
+  transition: background .2s, transform .2s;
+}
+.price-cta:hover { transform: translateY(-1px); background: #2a2a26 }
+
+.price-footnote {
+  text-align: center; margin-top: 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+}
+
+/* ─── CONTACT ──────────────────────────────────────────────── */
+#kontakt { background: var(--bg); padding: 80px 0 100px }
+
+.contact-card {
+  background: var(--white); border: 1px solid var(--line); border-radius: 24px;
+  padding: 80px 64px; position: relative; overflow: hidden;
+  box-shadow: 0 2px 24px rgba(0,0,0,.05);
+}
+@media(max-width:640px) { .contact-card { padding: 48px 28px } }
+
+.contact-card::after {
+  content: ""; position: absolute; top: -100px; right: -100px;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,242,75,.28) 0%, transparent 70%);
+  pointer-events: none;
+}
+.contact-card .eyebrow,
+.contact-card h2,
+.contact-card > p { position: relative; z-index: 1 }
+
+.contact-card h2 { font-size: clamp(38px,5.5vw,76px); margin-bottom: 20px }
+.contact-card > p {
+  font-size: 18px; line-height: 1.6; color: var(--muted);
+  max-width: 520px; margin-bottom: 40px; font-weight: 400;
+}
+.email-link {
+  display: inline-flex; align-items: center; gap: 16px;
+  font-size: clamp(22px,3.5vw,44px); font-weight: 800; letter-spacing: -.025em;
+  transition: gap .3s; position: relative; z-index: 1;
+}
+.email-link:hover { gap: 22px }
+.email-link .arrow-circle {
+  width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: var(--bg);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  transition: transform .3s; flex-shrink: 0;
+}
+.email-link:hover .arrow-circle { transform: rotate(-15deg) scale(1.08) }
+
+.contact-foot {
+  display: flex; gap: 24px; flex-wrap: wrap; margin-top: 48px; padding-top: 36px;
+  border-top: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+  position: relative; z-index: 1;
+}
+.contact-foot a:hover { color: var(--ink) }
+
+/* Spinning sticker */
+.sticker {
+  position: absolute; right: 52px; top: -28px;
+  width: 130px; height: 130px; border-radius: 50%;
+  background: var(--ink); animation: spin 18s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg) } }
+.sticker svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spinrev 18s linear infinite }
+@keyframes spinrev { to { transform: rotate(-360deg) } }
+@media(max-width:640px) { .sticker { display: none } }
+
+/* ─── FOOTER ───────────────────────────────────────────────── */
+footer { border-top: 1px solid var(--line); padding: 44px 0; background: var(--bg) }
+.foot-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 16px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted);
+}
+.foot-links { display: flex; gap: 20px }
+.foot-links a:hover, .foot-inner a:hover { color: var(--ink) }
+
+/* ─── REVEAL ───────────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .75s cubic-bezier(.16,.86,.3,.98), transform .75s cubic-bezier(.16,.86,.3,.98) }
+.reveal.in { opacity: 1; transform: none }
+.reveal.d1 { transition-delay: .08s }
+.reveal.d2 { transition-delay: .16s }
+.reveal.d3 { transition-delay: .24s }
 </style>
 </head>
 <body>
 
-<nav class="top">
+<!-- NAV -->
+<nav>
   <div class="nav-inner">
-    <div class="nav-pill">
-      <a href="#top" class="logo"><span class="dot"></span> MLJ Digital</a>
-      <div class="nav-links">
-        <a href="#arbejde" data-da="Arbejde" data-en="Work">Arbejde</a>
-        <a href="#tilgang" data-da="Tilgang" data-en="Approach">Tilgang</a>
-        <a href="#priser" data-da="Priser" data-en="Pricing">Priser</a>
-      </div>
+    <a href="#top" class="logo"><span class="logo-dot"></span> MLJ Digital</a>
+    <div class="nav-links">
+      <a href="#arbejde" data-da="Arbejde" data-en="Work">Arbejde</a>
+      <a href="#tilgang" data-da="Tilgang" data-en="Approach">Tilgang</a>
+      <a href="#priser" data-da="Priser" data-en="Pricing">Priser</a>
     </div>
     <div class="nav-right">
       <div class="lang-switch">
         <button class="lang-btn active" data-lang="da">DA</button>
         <button class="lang-btn" data-lang="en">EN</button>
       </div>
-      <a href="#kontakt" class="nav-cta"><span data-da="Start et projekt " data-en="Start a project ">Start et projekt </span><span class="arrow">↗</span></a>
+      <a href="#kontakt" class="nav-cta"><span data-da="Start et projekt" data-en="Start a project">Start et projekt</span> ↗</a>
     </div>
   </div>
 </nav>
@@ -363,195 +460,175 @@
 <!-- HERO -->
 <section class="hero" id="top">
   <div class="wrap">
-    <span class="kicker"><span class="blink"></span> <span data-da="Dansk digitalt studie — Sjælland" data-en="Danish digital studio — Zealand">Dansk digitalt studie — Sjælland</span></span>
+    <div class="hero-tag">
+      <span class="dot"></span>
+      <span data-da="Dansk digitalt studie — Sjælland" data-en="Danish digital studio — Zealand">Dansk digitalt studie — Sjælland</span>
+    </div>
 
-    <h1 class="headline">
-      <span class="line"><span data-da="Vi bygger digitale" data-en="We build digital">Vi bygger digitale</span></span>
-      <span class="line"><span><span data-da="produkter " data-en="products ">produkter </span><span class="italic" data-da="der" data-en="that">der</span></span></span>
-      <span class="line"><span data-da="præsterer." data-en="perform.">præsterer.</span></span>
+    <h1>
+      <span class="line"><span data-da="Vi bygger" data-en="We build">Vi bygger</span></span>
+      <span class="line"><span><span data-da="digitale " data-en="digital ">digitale </span><span class="serif" data-da="produkter" data-en="products">produkter</span></span></span>
+      <span class="line"><span data-da="der præsterer." data-en="that perform.">der præsterer.</span></span>
     </h1>
 
-    <p class="hero-sub" data-da="Hjemmesider, web apps og SaaS — til ambitiøse virksomheder der vil have bureau-kvalitet uden bureau-regninger. Vi arbejder hurtigt, tænker skarpt, og leverer det der faktisk virker." data-en="Websites, web apps and SaaS — for ambitious companies that want agency quality without agency bills. We work fast, think sharp, and deliver what actually works.">
-      Hjemmesider, web apps og SaaS — til ambitiøse virksomheder der vil have bureau-kvalitet uden bureau-regninger. Vi arbejder hurtigt, tænker skarpt, og leverer det der faktisk virker.
-    </p>
-
-    <div class="hero-ctas">
-      <a href="#kontakt" class="btn-primary"><span data-da="Start et projekt" data-en="Start a project">Start et projekt</span> <span>→</span></a>
-      <a href="#arbejde" class="btn-ghost" data-da="Se vores arbejde" data-en="See our work">Se vores arbejde</a>
-    </div>
-
-    <div class="hero-meta">
-      <span><span class="tick">●</span> <span data-da="15+ projekter leveret" data-en="15+ projects delivered">15+ projekter leveret</span></span>
-      <span><span class="tick">●</span> <span data-da="Svar inden for 24 timer" data-en="Response within 24 hours">Svar inden for 24 timer</span></span>
-      <span><span class="tick">●</span> <span data-da="Baseret i Danmark" data-en="Based in Denmark">Baseret i Danmark</span></span>
-    </div>
-  </div>
-
-  <div class="hero-stats" aria-hidden="true">
-    <div class="hero-stats-head">
-      <span>MLJ / Status</span>
-      <span class="live"><i></i><span data-da="Ledig" data-en="Available">Ledig</span></span>
-    </div>
-    <div class="stat-row">
-      <span class="label" data-da="Projekter leveret" data-en="Projects delivered">Projekter leveret</span>
-      <div class="stat-row-col">
-        <span class="value">15<span style="color:var(--accent)">+</span></span>
-        <span class="sub" data-da="siden 2023" data-en="since 2023">siden 2023</span>
+    <div class="hero-body">
+      <div>
+        <p class="hero-sub" data-da="Hjemmesider, web apps og SaaS — til ambitiøse virksomheder der vil have bureau-kvalitet uden bureau-regninger. Vi arbejder hurtigt, tænker skarpt, og leverer det der faktisk virker." data-en="Websites, web apps and SaaS — for ambitious companies that want agency quality without agency bills. We work fast, think sharp, and deliver what actually works.">
+          Hjemmesider, web apps og SaaS — til ambitiøse virksomheder der vil have bureau-kvalitet uden bureau-regninger. Vi arbejder hurtigt, tænker skarpt, og leverer det der faktisk virker.
+        </p>
+        <div class="hero-actions">
+          <a href="#kontakt" class="btn-fill"><span data-da="Start et projekt" data-en="Start a project">Start et projekt</span> →</a>
+          <a href="#arbejde" class="btn-outline" data-da="Se vores arbejde" data-en="See our work">Se vores arbejde</a>
+        </div>
       </div>
-    </div>
-    <div class="stat-row">
-      <span class="label" data-da="Svartid" data-en="Response time">Svartid</span>
-      <div class="stat-row-col">
-        <span class="value accent">&lt;24t</span>
-        <span class="sub" data-da="mandag–fredag" data-en="Mon–Fri">mandag–fredag</span>
-      </div>
-    </div>
-    <div class="stat-row">
-      <span class="label" data-da="Leveringstid" data-en="Delivery time">Leveringstid</span>
-      <div class="stat-row-col">
-        <span class="value italic" data-da="uger" data-en="weeks">uger</span>
-        <span class="sub" data-da="ikke måneder" data-en="not months">ikke måneder</span>
-      </div>
-    </div>
-    <div class="stat-row">
-      <span class="label" data-da="Prissætning" data-en="Pricing">Prissætning</span>
-      <div class="stat-row-col">
-        <span class="value" style="font-size:20px" data-da="Fast pris" data-en="Fixed price">Fast pris</span>
-        <span class="sub" data-da="ingen padded hours" data-en="no padded hours">ingen padded hours</span>
+
+      <div class="hero-trust">
+        <div class="trust-item" data-da="15+ projekter leveret siden 2023" data-en="15+ projects delivered since 2023">15+ projekter leveret siden 2023</div>
+        <div class="trust-item" data-da="Svar inden for 24 timer — mandag til fredag" data-en="Response within 24 hours — Monday to Friday">Svar inden for 24 timer — mandag til fredag</div>
+        <div class="trust-item" data-da="Fast pris, ingen padded hours" data-en="Fixed price, no padded hours">Fast pris, ingen padded hours</div>
+        <div class="trust-item" data-da="Baseret i Danmark, leverer til hele verden" data-en="Based in Denmark, delivering worldwide">Baseret i Danmark, leverer til hele verden</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee">
-  <div class="marquee-track">
-    <span>FacilityFlow <i class="dot"></i> Vincula <i class="dot"></i> Dennis Sølbæk <i class="dot"></i> Forly <i class="dot"></i> FacilityFlow <i class="dot"></i> Vincula <i class="dot"></i> Dennis Sølbæk <i class="dot"></i> Forly <i class="dot"></i></span>
-    <span aria-hidden="true">FacilityFlow <i class="dot"></i> Vincula <i class="dot"></i> Dennis Sølbæk <i class="dot"></i> Forly <i class="dot"></i> FacilityFlow <i class="dot"></i> Vincula <i class="dot"></i> Dennis Sølbæk <i class="dot"></i> Forly <i class="dot"></i></span>
+<!-- CLIENTS STRIP -->
+<div class="clients-strip">
+  <div class="clients-track">
+    <span>FacilityFlow <i class="sep"></i> Vincula <i class="sep"></i> Dennis Sølbæk <i class="sep"></i> Forly <i class="sep"></i> FacilityFlow <i class="sep"></i> Vincula <i class="sep"></i> Dennis Sølbæk <i class="sep"></i> Forly <i class="sep"></i></span>
+    <span aria-hidden="true">FacilityFlow <i class="sep"></i> Vincula <i class="sep"></i> Dennis Sølbæk <i class="sep"></i> Forly <i class="sep"></i> FacilityFlow <i class="sep"></i> Vincula <i class="sep"></i> Dennis Sølbæk <i class="sep"></i> Forly <i class="sep"></i></span>
   </div>
 </div>
 
 <!-- WORK -->
 <section id="arbejde">
   <div class="wrap">
-    <span class="section-label reveal" data-da="Udvalgt arbejde" data-en="Selected work">Udvalgt arbejde</span>
-    <h2 class="section-title reveal"><span data-da="Produkter vi har bygget og sendt " data-en="Products we've built and shipped ">Produkter vi har bygget og sendt </span><span class="italic" data-da="i verden." data-en="into the world.">i verden.</span></h2>
+    <p class="eyebrow reveal" data-da="Udvalgt arbejde" data-en="Selected work">Udvalgt arbejde</p>
+    <h2 class="reveal"><span data-da="Produkter vi har bygget " data-en="Products we've built ">Produkter vi har bygget </span><span class="serif" data-da="og sendt i verden." data-en="and shipped.">og sendt i verden.</span></h2>
 
     <div class="work-grid">
 
       <!-- FacilityFlow -->
       <article class="case reveal">
-        <div class="case-frame">
-          <div class="browser-bar">
-            <span class="d"></span><span class="d"></span><span class="d"></span>
-            <span class="url">facilityflow.dk</span>
+        <div class="case-screen">
+          <div class="browser-chrome">
+            <span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span>
+            <span class="chrome-url">facilityflow.dk</span>
           </div>
-          <div class="browser-body mock-ff">
-            <div class="mock-content">
-              <span class="mock-badge">● LIVE SaaS</span>
-              <div class="m-title">FacilityFlow</div>
-              <div class="mock-row">
-                <div class="mock-card">QR-scan · Hal A</div>
-                <div class="mock-card" data-da="3 aktive varsler" data-en="3 active alerts">3 aktive varsler</div>
+          <div class="case-ui ui-ff case-ff">
+            <div class="ui-inner">
+              <span class="ui-badge">● LIVE SaaS</span>
+              <div class="ui-title">FacilityFlow</div>
+              <div class="ui-rows">
+                <div class="ui-chip">QR-scan · Hal A</div>
+                <div class="ui-chip" data-da="3 aktive varsler" data-en="3 active alerts">3 aktive varsler</div>
               </div>
-              <div class="mock-bar"><i></i></div>
-              <div class="mock-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+              <div class="ui-bar"><i></i></div>
+              <div class="ui-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
             </div>
           </div>
         </div>
-        <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2025</span></div>
-        <h3>FacilityFlow</h3>
-        <p data-da="Facility management-platform til nordiske SMV'er. QR-baseret drift, varsler og audits — alt i én app." data-en="Facility management platform for Nordic SMEs. QR-based operations, alerts and audits — all in one app.">Facility management-platform til nordiske SMV'er. QR-baseret drift, varsler og audits — alt i én app.</p>
-        <div class="tag-row">
-          <span class="tag">SaaS</span><span class="tag">B2B</span><span class="tag">Mobile + Web</span>
+        <div class="case-body">
+          <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2025</span></div>
+          <h3>FacilityFlow</h3>
+          <p data-da="Facility management-platform til nordiske SMV'er. QR-baseret drift, varsler og audits — alt i én app." data-en="Facility management platform for Nordic SMEs. QR-based operations, alerts and audits — all in one app.">Facility management-platform til nordiske SMV'er. QR-baseret drift, varsler og audits — alt i én app.</p>
+          <div class="tag-row">
+            <span class="tag">SaaS</span><span class="tag">B2B</span><span class="tag">Mobile + Web</span>
+          </div>
+          <a href="https://facilityflow.dk" target="_blank" rel="noopener" class="case-link">facilityflow.dk ↗</a>
         </div>
-        <a href="https://facilityflow.dk" target="_blank" rel="noopener" class="case-link">facilityflow.dk ↗</a>
       </article>
 
       <!-- Vincula -->
       <article class="case reveal d1">
-        <div class="case-frame">
-          <div class="browser-bar">
-            <span class="d"></span><span class="d"></span><span class="d"></span>
-            <span class="url">vincula.dk</span>
+        <div class="case-screen">
+          <div class="browser-chrome">
+            <span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span>
+            <span class="chrome-url">vincula.dk</span>
           </div>
-          <div class="browser-body mock-vn">
-            <div class="mock-content">
-              <span class="mock-badge" data-da="● BRYLLUP 2026" data-en="● WEDDING 2026">● BRYLLUP 2026</span>
-              <div class="m-title" style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400">Vincula</div>
-              <div class="mock-row">
-                <div class="mock-card" data-da="142 gæster bekræftet" data-en="142 guests confirmed">142 gæster bekræftet</div>
-                <div class="mock-card" data-da="Bord 7 · 8 stole" data-en="Table 7 · 8 chairs">Bord 7 · 8 stole</div>
+          <div class="case-ui ui-vn case-vn">
+            <div class="ui-inner">
+              <span class="ui-badge" data-da="● BRYLLUP 2026" data-en="● WEDDING 2026">● BRYLLUP 2026</span>
+              <div class="ui-title" style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400">Vincula</div>
+              <div class="ui-rows">
+                <div class="ui-chip" data-da="142 gæster bekræftet" data-en="142 guests confirmed">142 gæster bekræftet</div>
+                <div class="ui-chip" data-da="Bord 7 · 8 stole" data-en="Table 7 · 8 chairs">Bord 7 · 8 stole</div>
               </div>
-              <div class="mock-bar"><i></i></div>
-              <div class="mock-dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+              <div class="ui-bar"><i></i></div>
+              <div class="ui-dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
             </div>
           </div>
         </div>
-        <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2025</span></div>
-        <h3>Vincula</h3>
-        <p data-da="Bryllupsplanlægning gjort enkel. Fra gæsteliste til siddeplan — alt samlet ét sted, både for par og planlæggere." data-en="Wedding planning made simple. From guest list to seating plan — all in one place, for couples and planners alike.">Bryllupsplanlægning gjort enkel. Fra gæsteliste til siddeplan — alt samlet ét sted, både for par og planlæggere.</p>
-        <div class="tag-row">
-          <span class="tag">SaaS</span><span class="tag">B2C</span><span class="tag">Web</span>
+        <div class="case-body">
+          <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2025</span></div>
+          <h3>Vincula</h3>
+          <p data-da="Bryllupsplanlægning gjort enkel. Fra gæsteliste til siddeplan — alt samlet ét sted, både for par og planlæggere." data-en="Wedding planning made simple. From guest list to seating plan — all in one place, for couples and planners alike.">Bryllupsplanlægning gjort enkel. Fra gæsteliste til siddeplan — alt samlet ét sted, både for par og planlæggere.</p>
+          <div class="tag-row">
+            <span class="tag">SaaS</span><span class="tag">B2C</span><span class="tag">Web</span>
+          </div>
+          <a href="https://vincula.dk" target="_blank" rel="noopener" class="case-link">vincula.dk ↗</a>
         </div>
-        <a href="https://vincula.dk" target="_blank" rel="noopener" class="case-link">vincula.dk ↗</a>
       </article>
 
       <!-- Coach -->
       <article class="case reveal d2">
-        <div class="case-frame">
-          <div class="browser-bar">
-            <span class="d"></span><span class="d"></span><span class="d"></span>
-            <span class="url">businesscoachdennis.lovable.app</span>
+        <div class="case-screen">
+          <div class="browser-chrome">
+            <span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span>
+            <span class="chrome-url">businesscoachdennis.lovable.app</span>
           </div>
-          <div class="browser-body mock-co">
-            <div class="mock-content">
-              <span class="mock-badge">● EXECUTIVE COACH</span>
-              <div class="m-title">Dennis S.<br>Bjørngaard</div>
-              <div class="mock-row">
-                <div class="mock-card" data-da="→ Book samtale" data-en="→ Book a call">→ Book samtale</div>
-                <div class="mock-card" data-da="+34% konvertering" data-en="+34% conversion">+34% konvertering</div>
+          <div class="case-ui ui-co case-co">
+            <div class="ui-inner">
+              <span class="ui-badge">● EXECUTIVE COACH</span>
+              <div class="ui-title">Dennis S.<br>Bjørngaard</div>
+              <div class="ui-rows">
+                <div class="ui-chip" data-da="→ Book samtale" data-en="→ Book a call">→ Book samtale</div>
+                <div class="ui-chip" data-da="+34% konvertering" data-en="+34% conversion">+34% konvertering</div>
               </div>
-              <div class="mock-bar"><i></i></div>
+              <div class="ui-bar"><i></i></div>
             </div>
           </div>
         </div>
-        <div class="case-meta"><span data-da="Kundeløsning" data-en="Client solution">Kundeløsning</span><span>2025</span></div>
-        <h3>Dennis Sølbæk Bjørngaard</h3>
-        <p data-da="Personlig brandingside for executive coach. Skarp typografi, tydeligt værdiløfte, hurtig konvertering." data-en="Personal branding site for executive coach. Sharp typography, clear value proposition, fast conversion.">Personlig brandingside for executive coach. Skarp typografi, tydeligt værdiløfte, hurtig konvertering.</p>
-        <div class="tag-row">
-          <span class="tag">Branding</span><span class="tag">Landingpage</span>
+        <div class="case-body">
+          <div class="case-meta"><span data-da="Kundeløsning" data-en="Client solution">Kundeløsning</span><span>2025</span></div>
+          <h3>Dennis Sølbæk Bjørngaard</h3>
+          <p data-da="Personlig brandingside for executive coach. Skarp typografi, tydeligt værdiløfte, hurtig konvertering." data-en="Personal branding site for executive coach. Sharp typography, clear value proposition, fast conversion.">Personlig brandingside for executive coach. Skarp typografi, tydeligt værdiløfte, hurtig konvertering.</p>
+          <div class="tag-row">
+            <span class="tag">Branding</span><span class="tag">Landingpage</span>
+          </div>
+          <a href="https://businesscoachdennis.lovable.app" target="_blank" rel="noopener" class="case-link">businesscoachdennis.lovable.app ↗</a>
         </div>
-        <a href="https://businesscoachdennis.lovable.app" target="_blank" rel="noopener" class="case-link">businesscoachdennis.lovable.app ↗</a>
       </article>
 
       <!-- Forly -->
       <article class="case reveal d3">
-        <div class="case-frame">
-          <div class="browser-bar">
-            <span class="d"></span><span class="d"></span><span class="d"></span>
-            <span class="url">forly.dk</span>
+        <div class="case-screen">
+          <div class="browser-chrome">
+            <span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span>
+            <span class="chrome-url">forly.dk</span>
           </div>
-          <div class="browser-body mock-fo">
-            <div class="mock-content">
-              <span class="mock-badge">● COMING 2026</span>
-              <div class="m-title">Forly</div>
-              <div class="mock-row">
-                <div class="mock-card" data-da="Bestyrelse · 7 medl." data-en="Board · 7 members">Bestyrelse · 7 medl.</div>
-                <div class="mock-card" data-da="Kontingent: OK" data-en="Dues: OK">Kontingent: OK</div>
+          <div class="case-ui ui-fo case-fo">
+            <div class="ui-inner">
+              <span class="ui-badge">● COMING 2026</span>
+              <div class="ui-title">Forly</div>
+              <div class="ui-rows">
+                <div class="ui-chip" data-da="Bestyrelse · 7 medl." data-en="Board · 7 members">Bestyrelse · 7 medl.</div>
+                <div class="ui-chip" data-da="Kontingent: OK" data-en="Dues: OK">Kontingent: OK</div>
               </div>
-              <div class="mock-bar"><i></i></div>
-              <div class="mock-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+              <div class="ui-bar"><i></i></div>
+              <div class="ui-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
             </div>
           </div>
         </div>
-        <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2026</span></div>
-        <h3>Forly</h3>
-        <p data-da="Digitalt hjem for grundejerforeninger. Beboerkommunikation, dokumenter, kontingent og bestyrelsesarbejde — samlet ét sted." data-en="Digital home for homeowner associations. Resident communication, documents, dues and board work — all in one place.">Digitalt hjem for grundejerforeninger. Beboerkommunikation, dokumenter, kontingent og bestyrelsesarbejde — samlet ét sted.</p>
-        <div class="tag-row">
-          <span class="tag">SaaS</span><span class="tag">Foreninger</span><span class="tag">Web + Mobile</span>
+        <div class="case-body">
+          <div class="case-meta"><span data-da="Eget SaaS-produkt" data-en="Own SaaS product">Eget SaaS-produkt</span><span>2026</span></div>
+          <h3>Forly</h3>
+          <p data-da="Digitalt hjem for grundejerforeninger. Beboerkommunikation, dokumenter, kontingent og bestyrelsesarbejde — samlet ét sted." data-en="Digital home for homeowner associations. Resident communication, documents, dues and board work — all in one place.">Digitalt hjem for grundejerforeninger. Beboerkommunikation, dokumenter, kontingent og bestyrelsesarbejde — samlet ét sted.</p>
+          <div class="tag-row">
+            <span class="tag">SaaS</span><span class="tag">Foreninger</span><span class="tag">Web + Mobile</span>
+          </div>
+          <a href="https://forly.dk" target="_blank" rel="noopener" class="case-link">forly.dk ↗</a>
         </div>
-        <a href="https://forly.dk" target="_blank" rel="noopener" class="case-link">forly.dk ↗</a>
       </article>
 
     </div>
@@ -561,31 +638,31 @@
 <!-- APPROACH -->
 <section id="tilgang">
   <div class="wrap">
-    <span class="section-label reveal" data-da="Tilgang" data-en="Approach">Tilgang</span>
-    <h2 class="section-title reveal"><span data-da="Vi bygger hurtigt. Vi bygger rigtigt. Vi overleverer " data-en="We build fast. We build right. We ">Vi bygger hurtigt. Vi bygger rigtigt. Vi overleverer </span><span class="italic" style="color:#0e0e0c" data-da="ikke" data-en="never">ikke</span><span data-da=" regninger." data-en=" pad the bill."> regninger.</span></h2>
+    <p class="eyebrow reveal" data-da="Tilgang" data-en="Approach">Tilgang</p>
+    <h2 class="reveal"><span data-da="Vi bygger hurtigt. Rigtigt. " data-en="We build fast. Right. ">Vi bygger hurtigt. Rigtigt. </span><span class="serif" data-da="Uden overraskelser." data-en="No surprises.">Uden overraskelser.</span></h2>
 
     <div class="approach-grid">
-      <div class="approach-card reveal">
-        <span class="num" data-da="01 / Partnerskab" data-en="01 / Partnership">01 / Partnerskab</span>
+      <div class="ap-card reveal">
+        <span class="ap-num" data-da="01 / Partnerskab" data-en="01 / Partnership">01 / Partnerskab</span>
         <h3 data-da="Senior niveau, solo prissætning" data-en="Senior level, solo pricing">Senior niveau, solo prissætning</h3>
         <p data-da="Du arbejder direkte med Martin Jakobsen — ikke en junior designer i 3. led under en projektleder. Ingen mellemled, ingen tolkningsfejl, ingen padded hours." data-en="You work directly with Martin Jakobsen — not a junior designer 3 layers under a project manager. No middlemen, no misinterpretation, no padded hours.">Du arbejder direkte med Martin Jakobsen — ikke en junior designer i 3. led under en projektleder. Ingen mellemled, ingen tolkningsfejl, ingen padded hours.</p>
       </div>
-      <div class="approach-card reveal d1">
-        <span class="num" data-da="02 / Hastighed" data-en="02 / Speed">02 / Hastighed</span>
+      <div class="ap-card reveal d1">
+        <span class="ap-num" data-da="02 / Hastighed" data-en="02 / Speed">02 / Hastighed</span>
         <h3 data-da="Moderne stack, hurtig levering" data-en="Modern stack, fast delivery">Moderne stack, hurtig levering</h3>
         <p data-da="Vi bruger moderne teknologi og skarpe arbejdsprocesser til at levere i uger — ikke måneder. Skalerbart fra dag ét, klar til at vokse med dig." data-en="We use modern technology and sharp workflows to deliver in weeks — not months. Scalable from day one, ready to grow with you.">Vi bruger moderne teknologi og skarpe arbejdsprocesser til at levere i uger — ikke måneder. Skalerbart fra dag ét, klar til at vokse med dig.</p>
       </div>
-      <div class="approach-card reveal d2">
-        <span class="num" data-da="03 / Ærlighed" data-en="03 / Honesty">03 / Ærlighed</span>
+      <div class="ap-card reveal d2">
+        <span class="ap-num" data-da="03 / Ærlighed" data-en="03 / Honesty">03 / Ærlighed</span>
         <h3 data-da="Ingen overraskelser" data-en="No surprises">Ingen overraskelser</h3>
         <p data-da="Fast pris. Klar tidsplan. Ugentlige updates. Hvis scope ændrer sig, snakker vi om det først — du får aldrig en regning du ikke forventer." data-en="Fixed price. Clear timeline. Weekly updates. If scope changes, we talk first — you never get a bill you didn't expect.">Fast pris. Klar tidsplan. Ugentlige updates. Hvis scope ændrer sig, snakker vi om det først — du får aldrig en regning du ikke forventer.</p>
       </div>
     </div>
 
-    <div class="founder reveal">
+    <div class="founder-row reveal">
       <div class="founder-av">M</div>
-      <div class="founder-text">
-        <b>Martin Jakobsen</b>
+      <div class="founder-info">
+        <strong>Martin Jakobsen</strong>
         <span data-da="Grundlægger · MLJ Digital" data-en="Founder · MLJ Digital">Grundlægger · MLJ Digital</span>
       </div>
     </div>
@@ -595,60 +672,65 @@
 <!-- PRICING -->
 <section id="priser">
   <div class="wrap">
-    <span class="section-label reveal" data-da="Investering" data-en="Investment">Investering</span>
-    <h2 class="section-title reveal"><span data-da="Transparente priser. " data-en="Transparent pricing. ">Transparente priser. </span><span class="italic" data-da="Ingen" data-en="No">Ingen</span><span data-da=" overraskelser." data-en=" surprises."> overraskelser.</span></h2>
+    <p class="eyebrow reveal" data-da="Investering" data-en="Investment">Investering</p>
+    <h2 class="reveal"><span data-da="Transparente priser. " data-en="Transparent pricing. ">Transparente priser. </span><span class="serif" data-da="Ingen overraskelser." data-en="No surprises.">Ingen overraskelser.</span></h2>
 
     <div class="pricing-grid">
       <div class="price-card reveal">
-        <span class="price-kicker" data-da="Pakke 01" data-en="Package 01">Pakke 01</span>
+        <span class="price-tier" data-da="Pakke 01" data-en="Package 01">Pakke 01</span>
         <h3 data-da="Hjemmesider &amp; Landingpages" data-en="Websites &amp; Landing Pages">Hjemmesider &amp; Landingpages</h3>
-        <div class="price-amount"><span class="currency" data-da="Fra" data-en="From">Fra</span>12.000 kr</div>
-        <div class="price-unit" data-da="// 2–3 ugers leveringstid" data-en="// 2–3 week delivery">// 2–3 ugers leveringstid</div>
+        <div class="price-num"><span class="curr" data-da="Fra" data-en="From">Fra</span>12.000 kr</div>
+        <span class="price-unit" data-da="// 2–3 ugers leveringstid" data-en="// 2–3 week delivery">// 2–3 ugers leveringstid</span>
         <p class="price-desc" data-da="Moderne, hurtige sider der konverterer. Skarp copy, skarp design, skarp performance — klar til at hente kunder ind." data-en="Modern, fast sites that convert. Sharp copy, sharp design, sharp performance — ready to bring in customers.">Moderne, hurtige sider der konverterer. Skarp copy, skarp design, skarp performance — klar til at hente kunder ind.</p>
-        <a href="#kontakt" class="price-cta"><span data-da="Få tilbud" data-en="Get a quote">Få tilbud</span> <span>→</span></a>
+        <a href="#kontakt" class="price-cta"><span data-da="Få tilbud" data-en="Get a quote">Få tilbud</span><span>→</span></a>
       </div>
+
       <div class="price-card featured reveal d1">
-        <span class="price-kicker" data-da="Pakke 02 · Mest valgt" data-en="Package 02 · Most popular">Pakke 02 · Mest valgt</span>
+        <span class="price-tier" data-da="Pakke 02 · Mest valgt" data-en="Package 02 · Most popular">Pakke 02 · Mest valgt</span>
         <h3 data-da="Web Apps &amp; SaaS-platforme" data-en="Web Apps &amp; SaaS Platforms">Web Apps &amp; SaaS-platforme</h3>
-        <div class="price-amount"><span class="currency" data-da="Fra" data-en="From">Fra</span>35.000 kr</div>
-        <div class="price-unit" data-da="// Login · Database · Betalinger · Admin" data-en="// Login · Database · Payments · Admin">// Login · Database · Betalinger · Admin</div>
+        <div class="price-num"><span class="curr" data-da="Fra" data-en="From">Fra</span>35.000 kr</div>
+        <span class="price-unit" data-da="// Login · Database · Betalinger · Admin" data-en="// Login · Database · Payments · Admin">// Login · Database · Betalinger · Admin</span>
         <p class="price-desc" data-da="Komplette webapplikationer. Vi bygger produktet fra bunden, eller tager over hvor nogen andre gav op." data-en="Complete web applications. We build the product from scratch, or take over where someone else gave up.">Komplette webapplikationer. Vi bygger produktet fra bunden, eller tager over hvor nogen andre gav op.</p>
-        <a href="#kontakt" class="price-cta"><span data-da="Få tilbud" data-en="Get a quote">Få tilbud</span> <span>→</span></a>
+        <a href="#kontakt" class="price-cta"><span data-da="Få tilbud" data-en="Get a quote">Få tilbud</span><span>→</span></a>
       </div>
+
       <div class="price-card reveal d2">
-        <span class="price-kicker" data-da="Pakke 03" data-en="Package 03">Pakke 03</span>
+        <span class="price-tier" data-da="Pakke 03" data-en="Package 03">Pakke 03</span>
         <h3 data-da="Større løsninger" data-en="Larger solutions">Større løsninger</h3>
-        <div class="price-amount" style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;line-height:1.1;padding-bottom:8px" data-da="Efter aftale" data-en="By agreement">Efter aftale</div>
-        <div class="price-unit" style="margin-top:4px" data-da="// Skræddersyet til scope" data-en="// Tailored to scope">// Skræddersyet til scope</div>
+        <div class="price-num" style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:36px;padding-bottom:6px" data-da="Efter aftale" data-en="By agreement">Efter aftale</div>
+        <span class="price-unit" data-da="// Skræddersyet til scope" data-en="// Tailored to scope">// Skræddersyet til scope</span>
         <p class="price-desc" data-da="Komplekse platforme, løbende udvikling og strategiske partnerskaber. Vi sætter os ned og laver en plan der passer." data-en="Complex platforms, ongoing development and strategic partnerships. We sit down and make a plan that fits.">Komplekse platforme, løbende udvikling og strategiske partnerskaber. Vi sætter os ned og laver en plan der passer.</p>
-        <a href="#kontakt" class="price-cta"><span data-da="Kontakt os" data-en="Contact us">Kontakt os</span> <span>→</span></a>
+        <a href="#kontakt" class="price-cta"><span data-da="Kontakt os" data-en="Contact us">Kontakt os</span><span>→</span></a>
       </div>
     </div>
 
-    <div class="price-note reveal" data-da="Hver opgave får sit eget tilbud efter en uforpligtende samtale — ingen skjulte timer, ingen efter-regninger." data-en="Each project gets its own quote after a no-obligation call — no hidden hours, no surprise invoices.">
+    <p class="price-footnote reveal" data-da="Hver opgave får sit eget tilbud efter en uforpligtende samtale — ingen skjulte timer, ingen efter-regninger." data-en="Each project gets its own quote after a no-obligation call — no hidden hours, no surprise invoices.">
       Hver opgave får sit eget tilbud efter en uforpligtende samtale — ingen skjulte timer, ingen efter-regninger.
-    </div>
+    </p>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="kontakt">
   <div class="wrap">
-    <div class="contact-wrap">
+    <div class="contact-card">
       <div class="sticker">
-        <svg viewBox="0 0 140 140"><defs><path id="circ" d="M70,70 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs><text font-family="JetBrains Mono" font-size="10" font-weight="600" fill="#0e0e0c"><textPath href="#circ"><tspan id="sticker-text" data-da="SVAR INDEN 24 TIMER · SVAR INDEN 24 TIMER · " data-en="REPLY WITHIN 24 HOURS · REPLY WITHIN 24 HOURS · ">SVAR INDEN 24 TIMER · SVAR INDEN 24 TIMER · </tspan></textPath></text></svg>
+        <svg viewBox="0 0 130 130"><defs><path id="circ" d="M65,65 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"/></defs>
+        <text font-family="JetBrains Mono" font-size="9.5" font-weight="600" fill="#f9f8f5">
+          <textPath href="#circ"><tspan id="sticker-text" data-da="SVAR INDEN 24 TIMER · SVAR INDEN 24 TIMER · " data-en="REPLY WITHIN 24 HOURS · REPLY WITHIN 24 HOURS · ">SVAR INDEN 24 TIMER · SVAR INDEN 24 TIMER · </tspan></textPath>
+        </text></svg>
       </div>
 
-      <span class="section-label reveal" data-da="Kom i gang" data-en="Get started">Kom i gang</span>
-      <h2 class="reveal"><span data-da="Har du et projekt? " data-en="Got a project? ">Har du et projekt? </span><span class="italic" data-da="Lad os" data-en="Let's">Lad os</span><span data-da=" bygge det." data-en=" build it."> bygge det.</span></h2>
+      <p class="eyebrow reveal" data-da="Kom i gang" data-en="Get started">Kom i gang</p>
+      <h2 class="reveal"><span data-da="Har du et projekt? " data-en="Got a project? ">Har du et projekt? </span><span class="serif" data-da="Lad os bygge det." data-en="Let's build it.">Lad os bygge det.</span></h2>
       <p class="reveal" data-da="Fortæl os om det — hvor stort, hvor småt, hvor skævt. Vi svarer altid inden for 24 timer med en ærlig vurdering." data-en="Tell us about it — however big, small, or unconventional. We always respond within 24 hours with an honest assessment.">Fortæl os om det — hvor stort, hvor småt, hvor skævt. Vi svarer altid inden for 24 timer med en ærlig vurdering.</p>
 
-      <a href="mailto:hej@mljdigital.dk" class="email-big reveal">
-        <span class="circle">→</span>
+      <a href="mailto:hej@mljdigital.dk" class="email-link reveal">
+        <span class="arrow-circle">→</span>
         hej@mljdigital.dk
       </a>
 
-      <div class="contact-meta">
+      <div class="contact-foot">
         <a href="https://www.linkedin.com/in/martinljakobsen/" target="_blank" rel="noopener">LinkedIn — Martin Jakobsen ↗</a>
         <span data-da="Sjælland, DK" data-en="Zealand, DK">Sjælland, DK</span>
         <span data-da="Svar inden 24 timer" data-en="Reply within 24 hours">Svar inden 24 timer</span>
@@ -657,38 +739,40 @@
   </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="wrap foot">
-    <div data-da="© 2026 MLJ Digital — Alle rettigheder forbeholdes" data-en="© 2026 MLJ Digital — All rights reserved">© 2026 MLJ Digital — Alle rettigheder forbeholdes</div>
-    <div class="foot-links">
-      <a href="https://facilityflow.dk" target="_blank" rel="noopener">FacilityFlow</a>
-      <a href="https://vincula.dk" target="_blank" rel="noopener">Vincula</a>
-      <a href="https://forly.dk" target="_blank" rel="noopener">Forly</a>
+  <div class="wrap">
+    <div class="foot-inner">
+      <span data-da="© 2026 MLJ Digital — Alle rettigheder forbeholdes" data-en="© 2026 MLJ Digital — All rights reserved">© 2026 MLJ Digital — Alle rettigheder forbeholdes</span>
+      <div class="foot-links">
+        <a href="https://facilityflow.dk" target="_blank" rel="noopener">FacilityFlow</a>
+        <a href="https://vincula.dk" target="_blank" rel="noopener">Vincula</a>
+        <a href="https://forly.dk" target="_blank" rel="noopener">Forly</a>
+      </div>
     </div>
   </div>
 </footer>
 
 <script>
-  // Reveal on scroll
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  },{threshold:.14});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // Reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) } });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   // Smooth scroll
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', (e)=>{
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
       const id = a.getAttribute('href');
-      if(id.length>1 && document.querySelector(id)){
+      if (id.length > 1 && document.querySelector(id)) {
         e.preventDefault();
-        document.querySelector(id).scrollIntoView({behavior:'smooth',block:'start'});
+        document.querySelector(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   });
 
   // Language switcher
   const langBtns = document.querySelectorAll('.lang-btn');
-
   function setLang(lang) {
     langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
     document.documentElement.lang = lang;
@@ -697,10 +781,7 @@
       if (val !== undefined) el.textContent = val;
     });
   }
-
-  langBtns.forEach(btn => {
-    btn.addEventListener('click', () => setLang(btn.dataset.lang));
-  });
+  langBtns.forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
 </script>
 
 </body>
